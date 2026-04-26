@@ -25,8 +25,8 @@ $template_engine = ThemeAssociatif\Core\ThemeManager::getInstance()
     ->getContainer()
     ->get(\ThemeAssociatif\Contracts\TemplateEngineInterface::class);
 
-// Rendre le modele de repli generique.
-$template_engine->render('layouts/base', [
+// Afficher le modele de repli generique.
+$template_engine->display('layouts/base', [
     'title'   => get_the_title(),
     'content' => function () {
         if (have_posts()) {
