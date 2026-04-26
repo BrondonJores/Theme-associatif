@@ -95,7 +95,7 @@ add_action('after_setup_theme', function (): void {
     register_nav_menus([
         'primary'   => __('Menu principal', 'theme-associatif'),
         'footer'    => __('Menu pied de page', 'theme-associatif'),
-        'dashboard' => __('Menu tableau de bord membres', 'theme-associatif'),
+        'member_dashboard' => __('Menu tableau de bord membres', 'theme-associatif'),
     ]);
 }, 10);
 

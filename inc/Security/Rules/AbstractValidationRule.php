@@ -52,7 +52,7 @@ abstract class AbstractValidationRule
     /**
      * Execute la regle de validation sur une valeur.
      *
-     * @param  mixed  $value Le nom du champ valide.
+     * @param  mixed  $value La valeur a valider.
      * @param  string $field Le nom du champ (pour les messages d'erreur).
      * @return bool   True si la valeur est valide.
      */

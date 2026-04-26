@@ -150,7 +150,7 @@ class PermissionCheckerService implements PermissionCheckerInterface
             return true;
         }
 
-        return $this->currentUserCan('administrator');
+        return $this->currentUserCan('manage_options');
     }
 
     /**
