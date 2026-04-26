@@ -2,7 +2,7 @@
 /**
  * Gestionnaire des menus de navigation WordPress
  *
- * Implementation concrète de MenuManagerInterface.
+ * Implementation concrete de MenuManagerInterface.
  * Gère l'enregistrement des emplacements de navigation et leur rendu HTML,
  * en chargeant les emplacements depuis la configuration centralisee.
  *

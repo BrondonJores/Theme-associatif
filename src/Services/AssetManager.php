@@ -9,7 +9,7 @@
  * Principe SOLID applique :
  * - Single Responsibility : Gestion exclusive des assets (CSS et JS).
  * - Open/Closed           : Configuration externe ; pas besoin de modifier la classe.
- * - Liskov Substitution   : Implementte pleinement AssetManagerInterface.
+ * - Liskov Substitution   : Implemente pleinement AssetManagerInterface.
  *
  * @package ThemeAssociatif\Services
  * @since   1.0.0
