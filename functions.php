@@ -1,108 +1,90 @@
 <?php
 
-declare(strict_types=1);
-
 /**
- * Theme Associatif - Fichier principal du theme
+ * Point d'entree principal du theme WordPress
  *
- * Ce fichier est le point d'entree du theme WordPress.
- * Il configure l'autoloader PSR-4, initialise le systeme de securite
- * et enregistre les hooks WordPress fondamentaux du theme.
+ * Ce fichier est le point d'entree unique du theme. Il est responsable de :
+ * - Verifier les prerequis (version PHP, WordPress)
+ * - Charger l'autoloader Composer (PSR-4)
+ * - Instancier et demarrer le ThemeManager
+ * - Exposer les helpers globaux pour les templates
  *
- * Architecture :
- * - PSR-4 autoloading pour tous les composants sous inc/
- * - Systeme de securite complet via SecurityServiceProvider
- * - Hooks enregistres selon le principe de responsabilite unique
+ * Principe SOLID applique :
+ * - Single Responsibility : Ce fichier ne fait qu'initialiser le theme.
+ * - Dependency Inversion  : On depend d'abstractions (interfaces), pas de concretions.
  *
  * @package ThemeAssociatif
  * @since   1.0.0
  */
 
-if (!defined('ABSPATH')) {
+declare(strict_types=1);
+
+// Securite : empecher l'acces direct au fichier.
+if (! defined('ABSPATH')) {
     exit;
 }
 
-/**
- * Constantes du theme.
- * Centralise les chemins et URLs pour eviter les chemins en dur.
- */
-define('TA_VERSION', '1.0.0');
-define('TA_THEME_DIR', get_template_directory());
-define('TA_THEME_URI', get_template_directory_uri());
-define('TA_INC_DIR', TA_THEME_DIR . '/inc');
+// Verifier la version minimale de PHP requise par ce theme.
+if (version_compare(PHP_VERSION, '8.1', '<')) {
+    add_action('admin_notices', static function (): void {
+        $message = sprintf(
+            /* translators: 1: Version PHP requise, 2: Version PHP actuelle */
+            esc_html__(
+                'Theme Associatif requiert PHP %1$s ou superieur. Version detectee : %2$s.',
+                'theme-associatif'
+            ),
+            '8.1',
+            PHP_VERSION
+        );
+        echo '<div class="notice notice-error"><p>' . esc_html($message) . '</p></div>';
+    });
+    return;
+}
+
+// Verifier la version minimale de WordPress.
+global $wp_version;
+if (version_compare($wp_version, '6.0', '<')) {
+    add_action('admin_notices', static function (): void {
+        $message = sprintf(
+            /* translators: 1: Version WordPress requise, 2: Version WordPress actuelle */
+            esc_html__(
+                'Theme Associatif requiert WordPress %1$s ou superieur. Version detectee : %2$s.',
+                'theme-associatif'
+            ),
+            '6.0',
+            $GLOBALS['wp_version']
+        );
+        echo '<div class="notice notice-error"><p>' . esc_html($message) . '</p></div>';
+    });
+    return;
+}
+
+// Charger l'autoloader PSR-4 de Composer.
+// Si le dossier vendor n'existe pas, afficher un avertissement dans l'admin.
+$autoloader = get_template_directory() . '/vendor/autoload.php';
+if (! file_exists($autoloader)) {
+    add_action('admin_notices', static function (): void {
+        $message = esc_html__(
+            'Theme Associatif : les dependances Composer sont manquantes. '
+            . 'Executez "composer install" dans le dossier du theme.',
+            'theme-associatif'
+        );
+        echo '<div class="notice notice-error"><p>' . esc_html($message) . '</p></div>';
+    });
+    return;
+}
+require_once $autoloader;
+
+// Demarrer le gestionnaire principal du theme.
+// ThemeManager suit le pattern Singleton pour garantir une initialisation unique.
+ThemeAssociatif\Core\ThemeManager::getInstance()->boot();
 
 /**
- * Autoloader PSR-4 pour l'espace de noms ThemeAssociatif.
- * Convertit le namespace en chemin de fichier :
- * ThemeAssociatif\Security\Services\SanitizerService
- * => inc/Security/Services/SanitizerService.php
+ * Retourne le SecurityServiceProvider initialise.
  *
- * @param string $className Le nom complet de la classe a charger.
- * @return void
- */
-spl_autoload_register(function (string $className): void {
-    $prefix    = 'ThemeAssociatif\\';
-    $baseDir   = TA_INC_DIR . '/';
-
-    $len = strlen($prefix);
-
-    if (strncmp($prefix, $className, $len) !== 0) {
-        return;
-    }
-
-    $relativeClass = substr($className, $len);
-    $file          = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
-
-    if (file_exists($file)) {
-        require $file;
-    }
-});
-
-/**
- * Initialisation du systeme de securite.
- * Le SecurityServiceProvider est instancie une seule fois et
- * mis a disposition via une fonction globale pour les templates.
- *
- * Priorite 1 : doit etre charge avant tout autre composant du theme.
- */
-add_action('after_setup_theme', function (): void {
-    ThemeAssociatif\Security\SecurityServiceProvider::getInstance();
-}, 1);
-
-/**
- * Configuration de base du theme WordPress.
- * Enregistre les fonctionnalites supportees par le theme.
- */
-add_action('after_setup_theme', function (): void {
-    load_theme_textdomain('theme-associatif', TA_THEME_DIR . '/languages');
-
-    add_theme_support('title-tag');
-    add_theme_support('post-thumbnails');
-    add_theme_support('html5', [
-        'search-form',
-        'comment-form',
-        'comment-list',
-        'gallery',
-        'caption',
-        'style',
-        'script',
-    ]);
-
-    add_theme_support('custom-logo');
-    add_theme_support('automatic-feed-links');
-    add_theme_support('responsive-embeds');
-
-    register_nav_menus([
-        'primary'   => __('Menu principal', 'theme-associatif'),
-        'footer'    => __('Menu pied de page', 'theme-associatif'),
-        'member_dashboard' => __('Menu tableau de bord membres', 'theme-associatif'),
-    ]);
-}, 10);
-
-/**
- * Fonction utilitaire : retourne le SecurityServiceProvider initialise.
- * Permet aux templates d'acceder aux services de securite sans
- * connaitre les details d'implementation (Dependency Inversion).
+ * Cette fonction utilitaire permet aux templates d'acceder aux services
+ * de securite sans connaitre les details d'implementation
+ * (Dependency Inversion Principle).
  *
  * Exemple d'utilisation dans un template :
  *

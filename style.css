@@ -1,15 +1,31 @@
 /*
  * Theme Name:  Theme Associatif
  * Theme URI:   https://github.com/BrondonJores/Theme-associatif
- * Description: Theme WordPress moderne et securise pour associations etudiantes,
- *              construit selon les principes SOLID avec un systeme de securite complet.
- * Version:     1.0.0
+ * Description: Theme WordPress moderne pour les associations etudiantes. Architecture SOLID,
+ *              securise, evolutif et conforme aux standards actuels. Construit avec une
+ *              separation stricte des responsabilites, un conteneur d'injection de dependances
+ *              et des interfaces bien definies.
  * Author:      BrondonJores
  * Author URI:  https://github.com/BrondonJores
+ * Version:     1.0.0
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: theme-associatif
  * Domain Path: /languages
  * Requires at least: 6.0
- * Requires PHP: 8.1
+ * Tested up to:      6.5
+ * Requires PHP:      8.1
+ * Tags:              association, etudiante, moderne, solid, responsive, accessibilite
+ */
+
+/**
+ * Ce fichier contient uniquement l'en-tete requis par WordPress pour identifier le theme.
+ * Tous les styles sont geres via le service AssetManager selon le principe
+ * de responsabilite unique (Single Responsibility Principle).
+ *
+ * Les feuilles de style sont enregistrees et enqueues dans :
+ * src/Services/AssetManager.php
+ *
+ * La configuration des assets se trouve dans :
+ * config/assets.php
  */
