@@ -1,0 +1,234 @@
+/**
+ * Modal / dialog component.
+ *
+ * Provides overlay, container, header/body/footer regions, size variants,
+ * open/close transitions, and accessible styles.
+ */
+
+/* ---------------------------------------------------------------------------
+ * Overlay (backdrop)
+ * ------------------------------------------------------------------------- */
+
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	background-color: rgb(0 0 0 / 0.5);
+	backdrop-filter: blur(2px);
+	-webkit-backdrop-filter: blur(2px);
+	z-index: var(--z-overlay);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--space-4);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.modal-overlay.is-open {
+	opacity: 1;
+	visibility: visible;
+}
+
+/* Body scroll lock */
+body.modal-open {
+	overflow: hidden;
+	padding-right: var(--scrollbar-width, 0);
+}
+
+/* ---------------------------------------------------------------------------
+ * Container
+ * ------------------------------------------------------------------------- */
+
+.modal-container {
+	background-color: var(--color-surface);
+	border-radius: var(--radius-2xl);
+	box-shadow: var(--shadow-2xl);
+	width: 100%;
+	max-height: calc(100vh - var(--space-8));
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	z-index: var(--z-modal);
+	transform: translateY(1.5rem) scale(0.97);
+	opacity: 0;
+	transition: transform var(--transition-slow), opacity var(--transition-slow);
+	overflow: hidden;
+}
+
+.modal-overlay.is-open .modal-container {
+	transform: translateY(0) scale(1);
+	opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+ * Sizes
+ * ------------------------------------------------------------------------- */
+
+.modal-sm   { max-width: 24rem; }
+.modal-md   { max-width: 32rem; }
+.modal-lg   { max-width: 48rem; }
+.modal-xl   { max-width: 64rem; }
+
+.modal-full {
+	max-width: calc(100vw - var(--space-8));
+	max-height: calc(100vh - var(--space-8));
+}
+
+/* ---------------------------------------------------------------------------
+ * Header
+ * ------------------------------------------------------------------------- */
+
+.modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--space-5) var(--space-6);
+	border-bottom: 1px solid var(--color-border);
+	flex-shrink: 0;
+}
+
+.modal-title {
+	font-family: var(--font-heading);
+	font-size: var(--text-xl);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text);
+	margin: 0;
+}
+
+.modal-close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	border-radius: var(--radius-full);
+	border: none;
+	background-color: transparent;
+	color: var(--color-text-secondary);
+	cursor: pointer;
+	transition: background-color var(--transition-base), color var(--transition-base);
+	flex-shrink: 0;
+}
+
+.modal-close:hover {
+	background-color: var(--color-bg-secondary);
+	color: var(--color-text);
+}
+
+.modal-close:focus-visible {
+	outline: 3px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+.modal-close svg {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * Body
+ * ------------------------------------------------------------------------- */
+
+.modal-body {
+	padding: var(--space-6);
+	overflow-y: auto;
+	flex: 1;
+	-webkit-overflow-scrolling: touch;
+}
+
+.modal-body p {
+	color: var(--color-text-secondary);
+	line-height: 1.7;
+}
+
+/* ---------------------------------------------------------------------------
+ * Footer
+ * ------------------------------------------------------------------------- */
+
+.modal-footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: var(--space-3);
+	padding: var(--space-4) var(--space-6);
+	border-top: 1px solid var(--color-border);
+	flex-shrink: 0;
+}
+
+.modal-footer-start {
+	justify-content: flex-start;
+}
+
+.modal-footer-between {
+	justify-content: space-between;
+}
+
+/* ---------------------------------------------------------------------------
+ * Focus trap indicator (for screen readers and high-contrast mode)
+ * The first and last focusable elements get sentinel indicators.
+ * ------------------------------------------------------------------------- */
+
+.modal-focus-sentinel {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Confirm dialog variant
+ * ------------------------------------------------------------------------- */
+
+.modal-confirm .modal-body {
+	text-align: center;
+	padding: var(--space-8) var(--space-6) var(--space-4);
+}
+
+.modal-confirm .modal-icon {
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: var(--radius-full);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-inline: auto;
+	margin-bottom: var(--space-4);
+}
+
+.modal-confirm .modal-icon svg {
+	width: 1.75rem;
+	height: 1.75rem;
+}
+
+.modal-confirm .modal-icon-warning {
+	background-color: var(--color-warning-bg);
+	color: var(--color-warning);
+}
+
+.modal-confirm .modal-icon-danger {
+	background-color: var(--color-error-bg);
+	color: var(--color-error);
+}
+
+.modal-confirm .modal-icon-success {
+	background-color: var(--color-success-bg);
+	color: var(--color-success);
+}
+
+/* ---------------------------------------------------------------------------
+ * Dark mode adjustments
+ * ------------------------------------------------------------------------- */
+
+[data-theme="dark"] .modal-container {
+	background-color: var(--color-surface);
+	border: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .modal-close:hover {
+	background-color: var(--color-bg-tertiary);
+}

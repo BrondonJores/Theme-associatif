@@ -1,0 +1,260 @@
+/**
+ * Grid and flexbox layout utilities.
+ *
+ * Provides CSS Grid and Flexbox utility classes with responsive variants
+ * at the following breakpoints:
+ *   sm: 640px  | md: 768px  | lg: 1024px  | xl: 1280px
+ */
+
+/* ---------------------------------------------------------------------------
+ * Display utilities
+ * ------------------------------------------------------------------------- */
+
+.hidden        { display: none; }
+.block         { display: block; }
+.inline-block  { display: inline-block; }
+.inline        { display: inline; }
+.flex          { display: flex; }
+.inline-flex   { display: inline-flex; }
+.grid          { display: grid; }
+.inline-grid   { display: inline-grid; }
+
+/* ---------------------------------------------------------------------------
+ * Container
+ * ------------------------------------------------------------------------- */
+
+.container {
+	width: 100%;
+	margin-inline: auto;
+	padding-inline: var(--container-padding);
+	max-width: var(--container-xl);
+}
+
+.container-sm  { max-width: var(--container-sm); }
+.container-md  { max-width: var(--container-md); }
+.container-lg  { max-width: var(--container-lg); }
+.container-xl  { max-width: var(--container-xl); }
+.container-2xl { max-width: var(--container-2xl); }
+
+/* ---------------------------------------------------------------------------
+ * CSS Grid
+ * ------------------------------------------------------------------------- */
+
+.grid-cols-1  { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4  { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-cols-6  { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.grid-cols-none { grid-template-columns: none; }
+
+/* Column spans */
+.col-span-1    { grid-column: span 1 / span 1; }
+.col-span-2    { grid-column: span 2 / span 2; }
+.col-span-3    { grid-column: span 3 / span 3; }
+.col-span-4    { grid-column: span 4 / span 4; }
+.col-span-5    { grid-column: span 5 / span 5; }
+.col-span-6    { grid-column: span 6 / span 6; }
+.col-span-7    { grid-column: span 7 / span 7; }
+.col-span-8    { grid-column: span 8 / span 8; }
+.col-span-9    { grid-column: span 9 / span 9; }
+.col-span-10   { grid-column: span 10 / span 10; }
+.col-span-11   { grid-column: span 11 / span 11; }
+.col-span-12   { grid-column: span 12 / span 12; }
+.col-span-full { grid-column: 1 / -1; }
+
+/* Row spans */
+.row-span-1    { grid-row: span 1 / span 1; }
+.row-span-2    { grid-row: span 2 / span 2; }
+.row-span-3    { grid-row: span 3 / span 3; }
+.row-span-full { grid-row: 1 / -1; }
+
+/* Grid flow */
+.grid-flow-row    { grid-auto-flow: row; }
+.grid-flow-col    { grid-auto-flow: column; }
+.grid-flow-dense  { grid-auto-flow: dense; }
+
+/* Auto columns */
+.auto-cols-auto { grid-auto-columns: auto; }
+.auto-cols-fr   { grid-auto-columns: minmax(0, 1fr); }
+
+/* ---------------------------------------------------------------------------
+ * Flexbox
+ * ------------------------------------------------------------------------- */
+
+.flex-row     { flex-direction: row; }
+.flex-col     { flex-direction: column; }
+.flex-row-rev { flex-direction: row-reverse; }
+.flex-col-rev { flex-direction: column-reverse; }
+
+.flex-wrap      { flex-wrap: wrap; }
+.flex-nowrap    { flex-wrap: nowrap; }
+.flex-wrap-rev  { flex-wrap: wrap-reverse; }
+
+.flex-1     { flex: 1 1 0%; }
+.flex-auto  { flex: 1 1 auto; }
+.flex-none  { flex: none; }
+.flex-grow  { flex-grow: 1; }
+.flex-shrink { flex-shrink: 1; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+/* Alignment - items */
+.items-start    { align-items: flex-start; }
+.items-end      { align-items: flex-end; }
+.items-center   { align-items: center; }
+.items-baseline { align-items: baseline; }
+.items-stretch  { align-items: stretch; }
+
+/* Alignment - justify */
+.justify-start   { justify-content: flex-start; }
+.justify-end     { justify-content: flex-end; }
+.justify-center  { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around  { justify-content: space-around; }
+.justify-evenly  { justify-content: space-evenly; }
+
+/* Self alignment */
+.self-auto    { align-self: auto; }
+.self-start   { align-self: flex-start; }
+.self-end     { align-self: flex-end; }
+.self-center  { align-self: center; }
+.self-stretch { align-self: stretch; }
+
+/* Place content */
+.place-items-center  { place-items: center; }
+.place-content-center { place-content: center; }
+
+/* ---------------------------------------------------------------------------
+ * Width and height
+ * ------------------------------------------------------------------------- */
+
+.w-full    { width: 100%; }
+.w-screen  { width: 100vw; }
+.w-auto    { width: auto; }
+.w-fit     { width: fit-content; }
+.max-w-full { max-width: 100%; }
+.max-w-prose { max-width: 65ch; }
+
+.h-full    { height: 100%; }
+.h-screen  { height: 100vh; }
+.h-auto    { height: auto; }
+.min-h-screen { min-height: 100vh; }
+
+/* ---------------------------------------------------------------------------
+ * Overflow
+ * ------------------------------------------------------------------------- */
+
+.overflow-hidden { overflow: hidden; }
+.overflow-auto   { overflow: auto; }
+.overflow-scroll { overflow: scroll; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-auto { overflow-y: auto; }
+
+/* ---------------------------------------------------------------------------
+ * Position
+ * ------------------------------------------------------------------------- */
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed    { position: fixed; }
+.sticky   { position: sticky; }
+.static   { position: static; }
+
+.inset-0 { inset: 0; }
+.top-0   { top: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0  { left: 0; }
+
+/* ---------------------------------------------------------------------------
+ * Responsive breakpoints
+ * sm: 640px
+ * ------------------------------------------------------------------------- */
+
+@media (min-width: 640px) {
+	.sm\:hidden       { display: none; }
+	.sm\:block        { display: block; }
+	.sm\:flex         { display: flex; }
+	.sm\:grid         { display: grid; }
+	.sm\:inline-flex  { display: inline-flex; }
+
+	.sm\:grid-cols-1  { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+	.sm\:grid-cols-2  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.sm\:grid-cols-3  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.sm\:grid-cols-4  { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+	.sm\:col-span-1   { grid-column: span 1 / span 1; }
+	.sm\:col-span-2   { grid-column: span 2 / span 2; }
+	.sm\:col-span-full { grid-column: 1 / -1; }
+
+	.sm\:flex-row  { flex-direction: row; }
+	.sm\:flex-col  { flex-direction: column; }
+}
+
+/* md: 768px */
+@media (min-width: 768px) {
+	.md\:hidden       { display: none; }
+	.md\:block        { display: block; }
+	.md\:flex         { display: flex; }
+	.md\:grid         { display: grid; }
+	.md\:inline-flex  { display: inline-flex; }
+
+	.md\:grid-cols-1  { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+	.md\:grid-cols-2  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.md\:grid-cols-3  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.md\:grid-cols-4  { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+	.md\:col-span-1   { grid-column: span 1 / span 1; }
+	.md\:col-span-2   { grid-column: span 2 / span 2; }
+	.md\:col-span-3   { grid-column: span 3 / span 3; }
+	.md\:col-span-4   { grid-column: span 4 / span 4; }
+	.md\:col-span-6   { grid-column: span 6 / span 6; }
+	.md\:col-span-full { grid-column: 1 / -1; }
+
+	.md\:flex-row  { flex-direction: row; }
+	.md\:flex-col  { flex-direction: column; }
+}
+
+/* lg: 1024px */
+@media (min-width: 1024px) {
+	.lg\:hidden       { display: none; }
+	.lg\:block        { display: block; }
+	.lg\:flex         { display: flex; }
+	.lg\:grid         { display: grid; }
+	.lg\:inline-flex  { display: inline-flex; }
+
+	.lg\:grid-cols-1  { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+	.lg\:grid-cols-2  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.lg\:grid-cols-3  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.lg\:grid-cols-4  { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+	.lg\:grid-cols-6  { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+	.lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+	.lg\:col-span-1   { grid-column: span 1 / span 1; }
+	.lg\:col-span-2   { grid-column: span 2 / span 2; }
+	.lg\:col-span-3   { grid-column: span 3 / span 3; }
+	.lg\:col-span-4   { grid-column: span 4 / span 4; }
+	.lg\:col-span-6   { grid-column: span 6 / span 6; }
+	.lg\:col-span-8   { grid-column: span 8 / span 8; }
+	.lg\:col-span-full { grid-column: 1 / -1; }
+
+	.lg\:flex-row  { flex-direction: row; }
+	.lg\:flex-col  { flex-direction: column; }
+}
+
+/* xl: 1280px */
+@media (min-width: 1280px) {
+	.xl\:hidden       { display: none; }
+	.xl\:block        { display: block; }
+	.xl\:flex         { display: flex; }
+	.xl\:grid         { display: grid; }
+
+	.xl\:grid-cols-2  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.xl\:grid-cols-3  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.xl\:grid-cols-4  { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+	.xl\:grid-cols-6  { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+	.xl\:col-span-4   { grid-column: span 4 / span 4; }
+	.xl\:col-span-6   { grid-column: span 6 / span 6; }
+	.xl\:col-span-8   { grid-column: span 8 / span 8; }
+}

@@ -1,0 +1,322 @@
+/**
+ * CSS animations and transitions.
+ *
+ * Provides keyframe definitions, animation utility classes, transition
+ * utilities, hover effects, and intersection-observer helpers.
+ * All animations respect the prefers-reduced-motion media query.
+ */
+
+/* ---------------------------------------------------------------------------
+ * Keyframe definitions
+ * ------------------------------------------------------------------------- */
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(1.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInDown {
+	from {
+		opacity: 0;
+		transform: translateY(-1.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideInLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-2rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideInRight {
+	from {
+		opacity: 0;
+		transform: translateX(2rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes pulse {
+	0%, 100% { opacity: 1; }
+	50%       { opacity: 0.5; }
+}
+
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to   { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+	0%, 100% {
+		transform: translateY(0);
+		animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+	}
+	50% {
+		transform: translateY(-0.5rem);
+		animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+	}
+}
+
+@keyframes shimmer {
+	from { background-position: -200% 0; }
+	to   { background-position: 200% 0; }
+}
+
+/* ---------------------------------------------------------------------------
+ * Animation utility classes
+ * ------------------------------------------------------------------------- */
+
+.animate-fade-in {
+	animation: fadeIn var(--transition-slow) ease both;
+}
+
+.animate-fade-up {
+	animation: fadeInUp var(--transition-slow) ease both;
+}
+
+.animate-fade-down {
+	animation: fadeInDown var(--transition-slow) ease both;
+}
+
+.animate-slide-left {
+	animation: slideInLeft var(--transition-slow) ease both;
+}
+
+.animate-slide-right {
+	animation: slideInRight var(--transition-slow) ease both;
+}
+
+.animate-scale-in {
+	animation: scaleIn var(--transition-base) ease both;
+}
+
+.animate-pulse {
+	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-spin {
+	animation: spin 1s linear infinite;
+}
+
+.animate-bounce {
+	animation: bounce 1s infinite;
+}
+
+/* ---------------------------------------------------------------------------
+ * Transition utilities
+ * ------------------------------------------------------------------------- */
+
+.transition {
+	transition-property: color, background-color, border-color, text-decoration-color,
+		fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 200ms;
+}
+
+.transition-colors {
+	transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 200ms;
+}
+
+.transition-opacity {
+	transition-property: opacity;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 200ms;
+}
+
+.transition-transform {
+	transition-property: transform;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 200ms;
+}
+
+.transition-shadow {
+	transition-property: box-shadow;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 200ms;
+}
+
+.duration-75   { transition-duration: 75ms; }
+.duration-100  { transition-duration: 100ms; }
+.duration-150  { transition-duration: 150ms; }
+.duration-200  { transition-duration: 200ms; }
+.duration-300  { transition-duration: 300ms; }
+.duration-500  { transition-duration: 500ms; }
+.duration-700  { transition-duration: 700ms; }
+.duration-1000 { transition-duration: 1000ms; }
+
+.ease-linear { transition-timing-function: linear; }
+.ease-in     { transition-timing-function: cubic-bezier(0.4, 0, 1, 1); }
+.ease-out    { transition-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+.ease-in-out { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* ---------------------------------------------------------------------------
+ * Hover effects
+ * ------------------------------------------------------------------------- */
+
+.hover-lift {
+	transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.hover-lift:hover,
+.hover-lift:focus-visible {
+	transform: translateY(-4px);
+	box-shadow: var(--shadow-xl);
+}
+
+.hover-scale {
+	transition: transform var(--transition-base);
+}
+
+.hover-scale:hover,
+.hover-scale:focus-visible {
+	transform: scale(1.03);
+}
+
+.hover-glow {
+	transition: box-shadow var(--transition-base);
+}
+
+.hover-glow:hover {
+	box-shadow: 0 0 0 4px rgb(99 102 241 / 0.2);
+}
+
+/* ---------------------------------------------------------------------------
+ * Animation delay utilities
+ * ------------------------------------------------------------------------- */
+
+.delay-75  { animation-delay: 75ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+
+/* Staggered children - apply on parent */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 500ms; }
+
+/* ---------------------------------------------------------------------------
+ * Intersection Observer scroll animations
+ * Elements start hidden; JavaScript adds .is-visible to trigger animation.
+ * ------------------------------------------------------------------------- */
+
+.animate-on-scroll {
+	opacity: 0;
+	transform: translateY(1.5rem);
+	transition: opacity var(--transition-slower), transform var(--transition-slower);
+}
+
+.animate-on-scroll.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.animate-on-scroll-left {
+	opacity: 0;
+	transform: translateX(-2rem);
+	transition: opacity var(--transition-slower), transform var(--transition-slower);
+}
+
+.animate-on-scroll-left.is-visible {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.animate-on-scroll-right {
+	opacity: 0;
+	transform: translateX(2rem);
+	transition: opacity var(--transition-slower), transform var(--transition-slower);
+}
+
+.animate-on-scroll-right.is-visible {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+/* Skeleton / loading shimmer */
+.skeleton {
+	background: linear-gradient(
+		90deg,
+		var(--color-neutral-100) 25%,
+		var(--color-neutral-200) 50%,
+		var(--color-neutral-100) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s infinite;
+	border-radius: var(--radius-md);
+}
+
+/* ---------------------------------------------------------------------------
+ * Reduced motion overrides
+ * All animations and transitions are disabled for users who prefer it.
+ * ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	.animate-on-scroll,
+	.animate-on-scroll-left,
+	.animate-on-scroll-right {
+		opacity: 1;
+		transform: none;
+	}
+
+	.hover-lift:hover,
+	.hover-lift:focus-visible {
+		transform: none;
+	}
+
+	.hover-scale:hover,
+	.hover-scale:focus-visible {
+		transform: none;
+	}
+}
