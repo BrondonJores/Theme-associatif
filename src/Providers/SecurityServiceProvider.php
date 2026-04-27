@@ -4,6 +4,8 @@
  *
  * Enregistre et demarre le service de securite dans le conteneur.
  * Configure les en-tetes de securite HTTP et les protections WordPress.
+ * Initialise egalement le systeme de securite complet (sanitization, validation,
+ * gestion des nonces, CSRF, roles, permissions, hashing, logging).
  *
  * Principe SOLID applique :
  * - Single Responsibility : Ce provider gere uniquement la securite.
@@ -19,6 +21,7 @@ namespace ThemeAssociatif\Providers;
 
 use ThemeAssociatif\Contracts\ContainerInterface;
 use ThemeAssociatif\Contracts\SecurityServiceInterface;
+use ThemeAssociatif\Security\SecurityServiceProvider as ComprehensiveSecurityProvider;
 use ThemeAssociatif\Services\SecurityService;
 
 /**
@@ -42,6 +45,12 @@ final class SecurityServiceProvider extends AbstractServiceProvider
             SecurityServiceInterface::class,
             static fn (): SecurityService => new SecurityService()
         );
+
+        // Enregistrer le systeme de securite complet comme singleton dans le conteneur.
+        $container->singleton(
+            ComprehensiveSecurityProvider::class,
+            static fn (): ComprehensiveSecurityProvider => ComprehensiveSecurityProvider::getInstance()
+        );
     }
 
     /**
@@ -53,6 +62,10 @@ final class SecurityServiceProvider extends AbstractServiceProvider
      */
     public function boot(ContainerInterface $container): void
     {
+        // Initialiser le systeme de securite complet (sanitization, validation,
+        // nonces, CSRF, roles, permissions, hashing, logging).
+        $container->get(ComprehensiveSecurityProvider::class);
+
         // Supprimer la version WordPress des assets publics pour eviter la divulgation de version.
         add_filter('style_loader_src', [$this, 'removeVersionQuery'], 9999);
         add_filter('script_loader_src', [$this, 'removeVersionQuery'], 9999);

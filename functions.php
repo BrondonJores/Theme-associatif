@@ -6,6 +6,7 @@
  * - Verifier les prerequis (version PHP, WordPress)
  * - Charger l'autoloader Composer (PSR-4)
  * - Instancier et demarrer le ThemeManager
+ * - Exposer les helpers globaux pour les templates
  *
  * Principe SOLID applique :
  * - Single Responsibility : Ce fichier ne fait qu'initialiser le theme.
@@ -76,3 +77,22 @@ require_once $autoloader;
 // Demarrer le gestionnaire principal du theme.
 // ThemeManager suit le pattern Singleton pour garantir une initialisation unique.
 ThemeAssociatif\Core\ThemeManager::getInstance()->boot();
+
+/**
+ * Retourne le SecurityServiceProvider initialise.
+ *
+ * Cette fonction utilitaire permet aux templates d'acceder aux services
+ * de securite sans connaitre les details d'implementation
+ * (Dependency Inversion Principle).
+ *
+ * Exemple d'utilisation dans un template :
+ *
+ *   $sanitizer = ta_security()->getSanitizer();
+ *   $name = $sanitizer->sanitizeTextField($_POST['name'] ?? '');
+ *
+ * @return ThemeAssociatif\Security\SecurityServiceProvider
+ */
+function ta_security(): ThemeAssociatif\Security\SecurityServiceProvider
+{
+    return ThemeAssociatif\Security\SecurityServiceProvider::getInstance();
+}
