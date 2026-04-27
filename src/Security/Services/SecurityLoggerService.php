@@ -240,7 +240,7 @@ class SecurityLoggerService implements SecurityLoggerInterface
         }
 
         if (count($events) >= self::MAX_EVENTS) {
-            array_shift($events);
+            $events = array_slice($events, -(self::MAX_EVENTS - 1));
         }
 
         $events[] = $entry;

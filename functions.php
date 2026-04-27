@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Point d'entree principal du theme WordPress
  *

@@ -237,7 +237,7 @@ class HasherService implements HasherInterface
         }
 
         if (! defined('AUTH_KEY') || ! defined('SECURE_AUTH_KEY') || ! defined('AUTH_SALT')) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Les constantes WordPress AUTH_KEY, SECURE_AUTH_KEY et AUTH_SALT doivent etre definies '
                 . 'pour utiliser le service de chiffrement. Verifiez le fichier wp-config.php.'
             );

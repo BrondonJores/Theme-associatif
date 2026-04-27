@@ -215,6 +215,7 @@ class ValidatorService implements ValidatorInterface
                 'min_length' => new MinLengthRule((int) $parameter),
                 'max_length' => new MaxLengthRule((int) $parameter),
                 'regex'      => new RegexRule($parameter),
+                'integer'    => new IntegerRule((int) $parameter),
                 default      => $this->rules[$ruleName] ?? null,
             };
         }
