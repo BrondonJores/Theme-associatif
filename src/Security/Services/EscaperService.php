@@ -63,11 +63,11 @@ class EscaperService implements EscaperInterface
     /**
      * {@inheritdoc}
      *
-     * Utilise esc_html_e() de WordPress pour echapper et afficher directement.
+     * Echappe la valeur avec esc_html() et l'affiche directement.
      */
     public function escHtmlE(string $value): void
     {
-        esc_html_e($value);
+        echo esc_html($value);
     }
 
     /**
@@ -84,11 +84,11 @@ class EscaperService implements EscaperInterface
     /**
      * {@inheritdoc}
      *
-     * Utilise esc_attr_e() de WordPress pour echapper et afficher directement.
+     * Echappe la valeur avec esc_attr() et l'affiche directement.
      */
     public function escAttrE(string $value): void
     {
-        esc_attr_e($value);
+        echo esc_attr($value);
     }
 
     /**

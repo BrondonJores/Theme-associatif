@@ -51,7 +51,7 @@ class RoleManagerService implements RoleManagerInterface
      */
     private array $roleDefinitions = [
         self::ROLE_PRESIDENT => [
-            'label'        => 'President de l\'association',
+            'label'        => 'Président de l\'association',
             'capabilities' => [
                 'read'                         => true,
                 'ta_manage_association'        => true,
@@ -92,7 +92,7 @@ class RoleManagerService implements RoleManagerInterface
             ],
         ],
         self::ROLE_ADHERENT => [
-            'label'        => 'Adherent',
+            'label'        => 'Adhérent',
             'capabilities' => [
                 'read'                         => true,
                 'ta_view_events'               => true,

@@ -236,9 +236,16 @@ class HasherService implements HasherInterface
             return $this->encryptionKey;
         }
 
-        $authKey       = defined('AUTH_KEY') ? AUTH_KEY : 'default-auth-key';
-        $secureAuthKey = defined('SECURE_AUTH_KEY') ? SECURE_AUTH_KEY : 'default-secure-auth-key';
-        $salt          = defined('AUTH_SALT') ? AUTH_SALT : 'default-auth-salt';
+        if (! defined('AUTH_KEY') || ! defined('SECURE_AUTH_KEY') || ! defined('AUTH_SALT')) {
+            throw new \RuntimeException(
+                'Les constantes WordPress AUTH_KEY, SECURE_AUTH_KEY et AUTH_SALT doivent etre definies '
+                . 'pour utiliser le service de chiffrement. Verifiez le fichier wp-config.php.'
+            );
+        }
+
+        $authKey       = AUTH_KEY;
+        $secureAuthKey = SECURE_AUTH_KEY;
+        $salt          = AUTH_SALT;
 
         $masterKey = hash_hmac('sha256', $authKey . $secureAuthKey, $salt, true);
 

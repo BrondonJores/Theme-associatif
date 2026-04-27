@@ -239,11 +239,11 @@ class SecurityLoggerService implements SecurityLoggerInterface
             $events = [];
         }
 
-        $events[] = $entry;
-
-        if (count($events) > self::MAX_EVENTS) {
-            $events = array_slice($events, -self::MAX_EVENTS);
+        if (count($events) >= self::MAX_EVENTS) {
+            array_shift($events);
         }
+
+        $events[] = $entry;
 
         update_option(self::OPTION_KEY, $events, false);
     }

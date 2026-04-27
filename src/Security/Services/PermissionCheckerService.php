@@ -195,6 +195,6 @@ class PermissionCheckerService implements PermissionCheckerInterface
             return $capability;
         }
 
-        return $capability . '_' . md5(serialize($args));
+        return $capability . '_' . hash('sha256', (string) json_encode($args));
     }
 }
