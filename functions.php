@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'THEME_ASSOCIATIF_VERSION', '1.0.0' );
 define( 'THEME_ASSOCIATIF_DIR', get_template_directory() );
 define( 'THEME_ASSOCIATIF_URI', get_template_directory_uri() );
+define( 'THEME_ASSOCIATIF_READING_WPM', 200 );
 
 /**
  * Load required includes in dependency order.

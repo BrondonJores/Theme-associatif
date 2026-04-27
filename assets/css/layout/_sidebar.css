@@ -1,0 +1,295 @@
+/* =============================================================
+   Layout: Sidebar
+   Sidebar layout, widget areas, sticky sidebar.
+   ============================================================= */
+
+/* ----------------------------------------------------------
+   Content + Sidebar Layout Container
+   ---------------------------------------------------------- */
+.has-sidebar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+    align-items: start;
+}
+
+@media (min-width: 1024px) {
+    .has-sidebar {
+        grid-template-columns: 1fr var(--sidebar-width, 20rem);
+    }
+
+    .has-sidebar--left {
+        grid-template-columns: var(--sidebar-width, 20rem) 1fr;
+    }
+}
+
+/* Wide sidebar variant */
+@media (min-width: 1280px) {
+    .has-sidebar {
+        --sidebar-width: 22rem;
+    }
+}
+
+/* ----------------------------------------------------------
+   Sidebar Element
+   ---------------------------------------------------------- */
+.widget-area {
+    width: 100%;
+}
+
+/* Sticky sidebar */
+@media (min-width: 1024px) {
+    .widget-area--sticky {
+        position: sticky;
+        top: calc(var(--header-height) + var(--space-6));
+        max-height: calc(100vh - var(--header-height) - var(--space-12));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-border) transparent;
+    }
+
+    .widget-area--sticky::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .widget-area--sticky::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .widget-area--sticky::-webkit-scrollbar-thumb {
+        background-color: var(--color-border);
+        border-radius: var(--radius-full);
+    }
+}
+
+/* ----------------------------------------------------------
+   Widget Base
+   ---------------------------------------------------------- */
+.widget {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    margin-bottom: var(--space-6);
+    transition: border-color var(--transition-fast);
+}
+
+.widget:last-child {
+    margin-bottom: 0;
+}
+
+.widget:hover {
+    border-color: var(--color-border-strong);
+}
+
+/* Widget title */
+.widget-title,
+.widget__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* ----------------------------------------------------------
+   Widget: Recent Posts
+   ---------------------------------------------------------- */
+.widget_recent_entries ul,
+.widget-recent-posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.widget_recent_entries li,
+.widget-recent-posts__item {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+}
+
+.widget_recent_entries a,
+.widget-recent-posts__link {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    text-decoration: none;
+    line-height: var(--leading-snug);
+    transition: color var(--transition-fast);
+}
+
+.widget_recent_entries a:hover,
+.widget-recent-posts__link:hover {
+    color: var(--color-primary);
+}
+
+.widget_recent_entries .post-date,
+.widget-recent-posts__date {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-1);
+}
+
+.widget-recent-posts__thumbnail {
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+/* ----------------------------------------------------------
+   Widget: Categories / Archives
+   ---------------------------------------------------------- */
+.widget_categories ul,
+.widget_archive ul,
+.widget-categories,
+.widget-archive {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.widget_categories li a,
+.widget_archive li a,
+.widget-categories__item a,
+.widget-archive__item a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.widget_categories li a:hover,
+.widget_archive li a:hover,
+.widget-categories__item a:hover {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-primary);
+}
+
+.widget_categories li a .count,
+.widget-categories__count {
+    font-size: var(--text-xs);
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-tertiary);
+    padding: 0.1rem var(--space-2);
+    border-radius: var(--radius-full);
+}
+
+/* ----------------------------------------------------------
+   Widget: Search
+   ---------------------------------------------------------- */
+.widget_search .search-form {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.widget_search .search-field {
+    flex: 1;
+}
+
+/* ----------------------------------------------------------
+   Widget: Tag Cloud
+   ---------------------------------------------------------- */
+.widget_tag_cloud .tagcloud,
+.widget-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.widget_tag_cloud a,
+.widget-tags__item {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs) !important;
+    font-weight: var(--font-weight-medium);
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.widget_tag_cloud a:hover,
+.widget-tags__item:hover {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary);
+    border-color: var(--color-primary-200);
+}
+
+[data-theme="dark"] .widget_tag_cloud a:hover {
+    background-color: rgb(99 102 241 / 0.2);
+    border-color: rgb(99 102 241 / 0.4);
+}
+
+/* ----------------------------------------------------------
+   Widget: Text / Calendar / Meta
+   ---------------------------------------------------------- */
+.widget_text p,
+.widget_calendar,
+.widget_meta ul {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+}
+
+.widget_meta ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.widget_meta li {
+    padding: var(--space-1) 0;
+}
+
+.widget_meta a {
+    color: var(--color-text-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* ----------------------------------------------------------
+   Dark Mode
+   ---------------------------------------------------------- */
+[data-theme="dark"] .widget {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+}
+
+/* ----------------------------------------------------------
+   Print
+   ---------------------------------------------------------- */
+@media print {
+    .widget-area {
+        display: none;
+    }
+
+    .has-sidebar {
+        grid-template-columns: 1fr;
+    }
+}

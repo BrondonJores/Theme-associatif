@@ -1,0 +1,37 @@
+/*
+ * Theme Associatif - Main CSS Aggregator
+ *
+ * Imports all design-system tokens, component styles, and layout styles
+ * in the correct cascade order.
+ *
+ * Load order:
+ *   1. Design system (tokens, typography, spacing, grid, animations)
+ *   2. Components (buttons, cards, forms, modals, navigation, badges)
+ *   3. Layout (header, footer, sidebar)
+ */
+
+/* ----------------------------------------------------------
+   Design System
+   ---------------------------------------------------------- */
+@import 'design-system/_variables.css';
+@import 'design-system/_typography.css';
+@import 'design-system/_spacing.css';
+@import 'design-system/_grid.css';
+@import 'design-system/_animations.css';
+
+/* ----------------------------------------------------------
+   Components
+   ---------------------------------------------------------- */
+@import 'components/_buttons.css';
+@import 'components/_cards.css';
+@import 'components/_forms.css';
+@import 'components/_modals.css';
+@import 'components/_navigation.css';
+@import 'components/_badges.css';
+
+/* ----------------------------------------------------------
+   Layout
+   ---------------------------------------------------------- */
+@import 'layout/_header.css';
+@import 'layout/_footer.css';
+@import 'layout/_sidebar.css';

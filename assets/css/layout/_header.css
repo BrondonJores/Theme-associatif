@@ -1,0 +1,263 @@
+/* =============================================================
+   Layout: Site Header
+   Sticky header with logo, navigation container, scroll effects.
+   ============================================================= */
+
+/* ----------------------------------------------------------
+   Site Header
+   ---------------------------------------------------------- */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    transition:
+        height var(--transition-base),
+        background-color var(--transition-base),
+        box-shadow var(--transition-base),
+        border-color var(--transition-base);
+}
+
+/* Scrolled state applied via JS */
+.site-header.is-scrolled {
+    height: var(--header-height-scrolled);
+    box-shadow: var(--shadow-md);
+    background-color: var(--color-bg);
+    border-bottom-color: var(--color-border-strong);
+}
+
+/* Transparent variant for pages with hero banners */
+.site-header--transparent {
+    background-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.site-header--transparent:not(.is-scrolled) {
+    --color-text: #FFFFFF;
+    --color-text-secondary: rgb(255 255 255 / 0.8);
+    --color-border: transparent;
+}
+
+/* ----------------------------------------------------------
+   Header Inner Container
+   ---------------------------------------------------------- */
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    height: 100%;
+    max-width: var(--container-xl);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+}
+
+@media (min-width: 640px) {
+    .site-header__inner {
+        padding-inline: var(--space-6);
+    }
+}
+
+@media (min-width: 1024px) {
+    .site-header__inner {
+        padding-inline: var(--space-8);
+    }
+}
+
+/* ----------------------------------------------------------
+   Logo Area
+   ---------------------------------------------------------- */
+.site-header__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.site-header__brand:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+.site-header__logo {
+    display: block;
+    height: 2.25rem;
+    width: auto;
+    transition: transform var(--transition-fast);
+}
+
+.is-scrolled .site-header__logo {
+    height: 2rem;
+}
+
+.site-header__brand:hover .site-header__logo {
+    transform: scale(1.03);
+}
+
+.site-header__logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+}
+
+.site-header__site-name {
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+}
+
+.site-header__tagline {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-regular);
+}
+
+@media (max-width: 380px) {
+    .site-header__tagline {
+        display: none;
+    }
+}
+
+/* ----------------------------------------------------------
+   Navigation Area
+   ---------------------------------------------------------- */
+.site-header__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 100%;
+}
+
+/* ----------------------------------------------------------
+   Header Actions (dark toggle, CTA, etc.)
+   ---------------------------------------------------------- */
+.site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+}
+
+/* ----------------------------------------------------------
+   Dark Mode Toggle Button
+   ---------------------------------------------------------- */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text);
+}
+
+.theme-toggle:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.theme-toggle__icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+}
+
+/* Show/hide sun vs moon icons based on theme */
+.theme-toggle .icon-sun {
+    display: none;
+}
+
+.theme-toggle .icon-moon {
+    display: block;
+}
+
+[data-theme="dark"] .theme-toggle .icon-sun {
+    display: block;
+}
+
+[data-theme="dark"] .theme-toggle .icon-moon {
+    display: none;
+}
+
+/* ----------------------------------------------------------
+   Skip to Content Link (positioned relative to header)
+   ---------------------------------------------------------- */
+.skip-to-content {
+    position: absolute;
+    top: -9999px;
+    left: var(--space-4);
+    z-index: var(--z-toast);
+    padding: var(--space-3) var(--space-6);
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: top var(--transition-fast);
+}
+
+.skip-to-content:focus {
+    top: var(--space-4);
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ----------------------------------------------------------
+   Header Progress Bar (reading progress indicator)
+   ---------------------------------------------------------- */
+.header-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(
+        90deg,
+        var(--color-primary),
+        var(--color-secondary)
+    );
+    transition: width 50ms linear;
+}
+
+/* ----------------------------------------------------------
+   Dark Mode
+   ---------------------------------------------------------- */
+[data-theme="dark"] .site-header {
+    background-color: var(--color-bg);
+    border-bottom-color: var(--color-border);
+}
+
+[data-theme="dark"] .site-header.is-scrolled {
+    background-color: var(--color-surface);
+}
+
+/* ----------------------------------------------------------
+   Print
+   ---------------------------------------------------------- */
+@media print {
+    .site-header {
+        position: static;
+        box-shadow: none;
+    }
+}
