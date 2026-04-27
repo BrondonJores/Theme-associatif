@@ -1,34 +1,34 @@
-# Guide des bonnes pratiques de securite - Theme Associatif
+# Guide des bonnes pratiques de sécurité - Theme Associatif
 
-Ce document decrit les pratiques de securite implementees dans le theme et les
-regles a respecter lors de tout developpement sur le theme.
+Ce document décrit les pratiques de sécurité implémentées dans le theme et les
+règles a respecter lors de tout developpement sur le theme.
 
 ---
 
 ## Table des matieres
 
 1. [Principes generaux](#principes-generaux)
-2. [Sanitization des entrees](#sanitization-des-entrees)
-3. [Echappement des sorties](#echappement-des-sorties)
-4. [Validation des donnees](#validation-des-donnees)
+2. [Sanitization des entrées](#sanitization-des-entrées)
+3. [Echappement des sorties](#échappement-des-sorties)
+4. [Validation des données](#validation-des-données)
 5. [Protection CSRF et Nonces](#protection-csrf-et-nonces)
 6. [Gestion des roles et permissions](#gestion-des-roles-et-permissions)
 7. [Hashing et encryption](#hashing-et-encryption)
-8. [Logging de securite](#logging-de-securite)
-9. [Regles a ne jamais enfreindre](#regles-a-ne-jamais-enfreindre)
+8. [Logging de sécurité](#logging-de-sécurité)
+9. [Regles a ne jamais enfreindre](#règles-a-ne-jamais-enfreindre)
 
 ---
 
 ## Principes generaux
 
-Le theme applique le modele de securite en couches :
+Le theme applique le modèle de sécurité en couches :
 
 ```
 [Entree utilisateur]
        |
-  [Sanitization]  --> Nettoyer les donnees brutes
+  [Sanitization]  --> Nettoyer les données brutes
        |
-  [Validation]    --> Verifier les regles metier
+  [Validation]    --> Vérifier les règles metier
        |
   [Traitement]    --> Logique applicative
        |
@@ -41,14 +41,14 @@ Le theme applique le modele de securite en couches :
 [Affichage]
 ```
 
-**Regle fondamentale** : Sanitiser a l'entree, echapper a la sortie.
+**Regle fondamentale** : Sanitiser a l'entrée, échapper a la sortie.
 
 ---
 
-## Sanitization des entrees
+## Sanitization des entrées
 
-Le `SanitizerService` doit etre utilise sur TOUTES les donnees provenant de l'exterieur :
-`$_POST`, `$_GET`, `$_REQUEST`, `$_COOKIE`, `$_SERVER`, donnees tierces via API.
+Le `SanitizerService` doit etre utilise sur TOUTES les données provenant de l'exterieur :
+`$_POST`, `$_GET`, `$_REQUEST`, `$_COOKIE`, `$_SERVER`, données tierces via API.
 
 ### Utilisation
 
@@ -70,7 +70,7 @@ $website = $sanitizer->sanitizeUrl($_POST['website'] ?? '');
 // Entier (ID, quantite, etc.)
 $userId = $sanitizer->sanitizeInt($_POST['user_id'] ?? 0);
 
-// Tableau de donnees
+// Tableau de données
 $formData = $sanitizer->sanitizeArray($_POST, 'text');
 ```
 
@@ -85,7 +85,7 @@ $formData = $sanitizer->sanitizeArray($_POST, 'text');
 | input number (entier)  | `sanitizeInt()`          |
 | input number (decimal) | `sanitizeFloat()`        |
 | editeur WYSIWYG        | `sanitizeHtml()`         |
-| slug, cle technique    | `sanitizeKey()`          |
+| slug, clé technique    | `sanitizeKey()`          |
 | classe CSS, ID HTML    | `sanitizeHtmlClass()`    |
 | nom de fichier         | `sanitizeFileName()`     |
 
@@ -93,10 +93,10 @@ $formData = $sanitizer->sanitizeArray($_POST, 'text');
 
 ## Echappement des sorties
 
-Le `EscaperService` doit etre utilise sur TOUTES les donnees affichees dans les templates,
-meme les donnees provenant de la base de donnees ou de constantes.
+Le `EscaperService` doit etre utilise sur TOUTES les données affichees dans les templates,
+meme les données provenant de la base de données ou de constantes.
 
-### Contextes d'echappement
+### Contextes d'échappement
 
 ```php
 $escaper = ta_security()->getEscaper();
@@ -119,22 +119,22 @@ echo '<div style="color: ' . $escaper->escCss($color) . '">';
 // HTML avec balises autorisees (contenu utilisateur enrichi)
 echo $escaper->escHtmlKses($userContent);
 
-// Traduction et echappement combines
+// Traduction et échappement combines
 echo $escaper->escHtmlTrans('Bienvenue', 'theme-associatif');
 ```
 
-### Regles d'echappement
+### Regles d'échappement
 
-- Toujours echapper au moment de l'affichage, pas au stockage
-- Ne jamais stocker des donnees deja echappees (double echappement)
+- Toujours échapper au moment de l'affichage, pas au stockage
+- Ne jamais stocker des données deja echappees (double échappement)
 - Choisir le bon contexte : une URL dans un attribut href utilise `escUrl()`, pas `escHtml()`
 - Les fonctions `*E()` affichent directement : `escHtmlE($value)` equivalent a `echo escHtml($value)`
 
 ---
 
-## Validation des donnees
+## Validation des données
 
-Le `ValidatorService` verifie que les donnees respectent les regles metier
+Le `ValidatorService` verifie que les données respectent les règles metier
 APRES sanitization et AVANT traitement.
 
 ### Regles disponibles
@@ -172,7 +172,7 @@ $validator->validate($_POST, [
 ]);
 ```
 
-### Liste des regles natives
+### Liste des règles natives
 
 | Regle             | Description                          | Exemple               |
 |-------------------|--------------------------------------|-----------------------|
@@ -188,7 +188,7 @@ $validator->validate($_POST, [
 
 ## Protection CSRF et Nonces
 
-Tous les formulaires qui modifient des donnees DOIVENT inclure un token CSRF.
+Tous les formulaires qui modifient des données DOIVENT inclure un token CSRF.
 
 ### Formulaires
 
@@ -246,12 +246,12 @@ add_action('wp_ajax_load_members', function () use ($nonce): void {
 
 ## Gestion des roles et permissions
 
-### Verifier les permissions avant toute action
+### Vérifier les permissions avant toute action
 
 ```php
 $permissions = ta_security()->getPermissionChecker();
 
-// Verification simple
+// Vérification simple
 if ($permissions->currentUserCan('ta_manage_events')) {
     // Afficher ou traiter...
 }
@@ -259,12 +259,12 @@ if ($permissions->currentUserCan('ta_manage_events')) {
 // Interruption automatique si permission manquante
 $permissions->requireCapability('ta_manage_members');
 
-// Verification sur un objet specifique
+// Vérification sur un objet specifique
 if ($permissions->currentUserCanOnObject('edit_post', $postId)) {
     // Modifier le post...
 }
 
-// Verifier si l'utilisateur est connecte
+// Vérifier si l'utilisateur est connecte
 if (!$permissions->isLoggedIn()) {
     wp_redirect(wp_login_url(get_permalink()));
     exit;
@@ -273,9 +273,9 @@ if (!$permissions->isLoggedIn()) {
 
 ### Roles disponibles
 
-| Role               | Label                     | Acces principal                                    |
+| Role               | Label                     | Accès principal                                    |
 |--------------------|---------------------------|---------------------------------------------------|
-| `ta_president`     | President de l'association | Acces complet, gestion association                |
+| `ta_president`     | President de l'association | Accès complet, gestion association                |
 | `ta_bureau`        | Membre du bureau           | Gestion evenements, membres, contenu              |
 | `ta_membre_actif`  | Membre actif               | Evenements, annuaire, creation de contenu         |
 | `ta_adherent`      | Adherent                   | Consultation evenements, modification profil      |
@@ -295,7 +295,7 @@ ta_send_notifications     - Envoyer des notifications
 ta_manage_content         - Gerer le contenu du site
 ta_publish_content        - Publier du contenu sans moderation
 ta_create_content         - Creer du contenu soumis a moderation
-ta_view_security_logs     - Consulter les journaux de securite
+ta_view_security_logs     - Consulter les journaux de sécurité
 ta_view_events            - Consulter les evenements
 ta_register_events        - S'inscrire aux evenements
 ta_view_members_directory - Consulter l'annuaire des membres
@@ -314,25 +314,25 @@ $hasher = ta_security()->getHasher();
 // Hacher un mot de passe (lors de la creation de compte)
 $hashedPassword = $hasher->hash($plainPassword);
 
-// Verifier un mot de passe (lors de la connexion)
+// Vérifier un mot de passe (lors de la connexion)
 if ($hasher->verify($inputPassword, $hashedPassword)) {
     // Connexion autorisee
 
-    // Verifier si le hash doit etre recalcule (mise a jour d'algorithme)
+    // Vérifier si le hash doit etre recalcule (mise a jour d'algorithme)
     if ($hasher->needsRehash($hashedPassword)) {
         $newHash = $hasher->hash($inputPassword);
-        // Sauvegarder $newHash en base de donnees
+        // Sauvegarder $newHash en base de données
     }
 }
 
-// Generer un token securise (lien de reinitialisation, cle API)
+// Generer un token securise (lien de reinitialisation, clé API)
 $resetToken = $hasher->generateToken(32);
 ```
 
-### Chiffrement de donnees sensibles
+### Chiffrement de données sensibles
 
 ```php
-// Chiffrer avant stockage en base de donnees
+// Chiffrer avant stockage en base de données
 $encryptedData = $hasher->encrypt($sensitiveData);
 update_user_meta($userId, 'ta_sensitive_field', $encryptedData);
 
@@ -340,24 +340,24 @@ update_user_meta($userId, 'ta_sensitive_field', $encryptedData);
 $stored    = get_user_meta($userId, 'ta_sensitive_field', true);
 $plainData = $hasher->decrypt($stored);
 
-// Signer des donnees pour verifier leur integrite
+// Signer des données pour vérifier leur integrite
 $signature = $hasher->sign($data, SECURE_AUTH_KEY);
 // Stocker $data et $signature separement
 
-// Verifier l'integrite
+// Vérifier l'integrite
 if (!$hasher->verifySignature($data, $signature, SECURE_AUTH_KEY)) {
-    // Les donnees ont ete modifiees
+    // Les données ont ete modifiees
 }
 ```
 
 ---
 
-## Logging de securite
+## Logging de sécurité
 
 Le `SecurityLoggerService` enregistre automatiquement :
 - Les violations CSRF (via `CsrfProtectorService`)
 - Les echecs d'authentification (via le hook `wp_login_failed`)
-- Les acces refuses (via `PermissionCheckerService::requireCapability()`)
+- Les accès refuses (via `PermissionCheckerService::requireCapability()`)
 
 ### Logging manuel
 
@@ -376,7 +376,7 @@ $logger->log('suspicious_activity', 'Tentatives repetees detectees.', $logger::L
 ]);
 
 // Methodes dediees
-$logger->logUnauthorizedAccess('ta_manage_finances', '/dashboard/finances');
+$logger->logUnauthorizedAccèss('ta_manage_finances', '/dashboard/finances');
 $logger->logValidationFailure('registration_form', $validator->getErrors());
 $logger->logPermissionChange($targetUserId, 'role: subscriber -> ta_membre_actif', $adminId);
 ```
@@ -396,31 +396,31 @@ $critical = $logger->getRecentEvents(10, $logger::LEVEL_CRITICAL);
 
 ## Regles a ne jamais enfreindre
 
-Les regles suivantes sont non-negociables et doivent etre respectees
+Les règles suivantes sont non-negociables et doivent etre respectees
 dans chaque contribution au theme.
 
 ### Entrees et sorties
 
 - Ne JAMAIS afficher une donnee externe sans l'avoir echappee avec la fonction appropriee
-- Ne JAMAIS inserer en base de donnees une donnee externe sans l'avoir sanitisee
+- Ne JAMAIS inserer en base de données une donnee externe sans l'avoir sanitisee
 - Ne JAMAIS utiliser `echo $_POST['champ']` directement dans un template
 - Ne JAMAIS utiliser `$wpdb->query()` avec des variables non preparees ; utiliser `$wpdb->prepare()`
 
 ### Formulaires
 
 - Tout formulaire POST doit inclure un token CSRF verifie cote serveur
-- La verification CSRF doit preceder tout traitement de donnees soumises
+- La vérification CSRF doit preceder tout traitement de données soumises
 - Ne jamais faire confiance aux champs hidden (ils peuvent etre modifies par l'utilisateur)
 
 ### Permissions
 
-- Toujours verifier les permissions AVANT d'executer une action sensible
+- Toujours vérifier les permissions AVANT d'exécuter une action sensible
 - Ne pas exposer d'informations sensibles a des utilisateurs non autorises
-- Verifier les permissions sur les objets individuels (pas seulement le type)
+- Vérifier les permissions sur les objets individuels (pas seulement le type)
 
 ### Cryptographie
 
-- Ne jamais implementer sa propre cryptographie
+- Ne jamais implémenter sa propre cryptographie
 - Utiliser PASSWORD_BCRYPT ou PASSWORD_ARGON2ID pour les mots de passe, jamais MD5 ou SHA1
 - Ne jamais stocker des mots de passe en clair ou reversiblement
 - Utiliser `hash_equals()` pour comparer des tokens (temps constant)
@@ -429,8 +429,8 @@ dans chaque contribution au theme.
 
 - Valider et sanitiser les noms de fichiers avec `sanitize_file_name()`
 - Bloquer les traversees de repertoire (`../`)
-- Verifier le type MIME des fichiers uploades, pas seulement l'extension
-- Ne jamais executer de fichiers uploades par l'utilisateur
+- Vérifier le type MIME des fichiers uploades, pas seulement l'extension
+- Ne jamais exécuter de fichiers uploades par l'utilisateur
 
 ### Logs et erreurs
 
